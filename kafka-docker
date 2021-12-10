@@ -1,1 +1,82 @@
 
+version: '3.7'
+
+networks:
+  zk-net:
+    name: zk-net
+
+services:
+  kafka-broker1:
+    image: wurstmeister/kafka:2.12-2.5.0
+    container_name: "kafka-broker1"
+    networks:
+      - zk-net
+    ports:
+      - "9092:9092"
+    environment:
+      - TZ=CST-8
+      - KAFKA_ZOOKEEPER_CONNECT=zk1:2181
+      # 非必须，设置自动创建 topic
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ADVERTISED_HOST_NAME=172.19.32.130
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.32.130:9092
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      # 非必须，设置对内存
+      # - KAFKA_HEAP_OPTS=-Xmx1G -Xms1G
+      # 非必须，设置保存7天数据，为默认值
+      - KAFKA_LOG_RETENTION_HOURS=168
+    volumes:
+      # 将 kafka 的数据文件映射出来
+      - ./kafka-broker1/data:/data/kafka-data
+    restart: always
+
+  kafka-broker2:
+    image: wurstmeister/kafka:2.12-2.5.0
+    container_name: "kafka-broker2"
+    networks:
+      - zk-net
+    ports:
+      - "9093:9093"
+    environment:
+      - TZ=CST-8
+      - KAFKA_ZOOKEEPER_CONNECT=zk1:2181
+      # 非必须，设置自动创建 topic
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ADVERTISED_HOST_NAME=172.19.32.130
+      - KAFKA_ADVERTISED_PORT=9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.32.130:9093
+      - KAFKA_LISTENERS=PLAINTEXT://:9093
+      # 非必须，设置对内存
+      # - KAFKA_HEAP_OPTS=-Xmx1G -Xms1G
+      # 非必须，设置保存7天数据，为默认值
+      - KAFKA_LOG_RETENTION_HOURS=168
+    volumes:
+      # 将 kafka 的数据文件映射出来
+      - ./kafka-broker2/data:/data/kafka-data
+    restart: always
+
+  kafka-broker3:
+    image: wurstmeister/kafka:2.12-2.5.0
+    container_name: "kafka-broker3"
+    networks:
+      - zk-net
+    ports:
+      - "9094:9094"
+    environment:
+      - TZ=CST-8
+      - KAFKA_ZOOKEEPER_CONNECT=zk1:2181
+      # 非必须，设置自动创建 topic
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ADVERTISED_HOST_NAME=172.19.32.130
+      - KAFKA_ADVERTISED_PORT=9094
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.32.130:9094
+      - KAFKA_LISTENERS=PLAINTEXT://:9094
+      # 非必须，设置对内存
+      # - KAFKA_HEAP_OPTS=-Xmx1G -Xms1G
+      # 非必须，设置保存7天数据，为默认值
+      - KAFKA_LOG_RETENTION_HOURS=168
+    volumes:
+      # 将 kafka 的数据文件映射出来
+      - ./kafka-broker3/data:/data/kafka-data
+    restart: always
