@@ -1,0 +1,20 @@
+version: "3.7"
+
+networks:
+  zk-net:
+    external: true
+
+
+services:
+  zookeeper:
+    image: "elkozmon/zoonavigator:latest"
+    ports:
+      - 9090:9090
+    restart: always
+    container_name: "zoonavigator"
+    networks: 
+        - zk-net
+    environment:
+      - "HTTP_PORT=9090"
+      - "CONNECTION_LOCALZK_NAME=zk-net"
+      - "CONNECTION_LOCALZK_CONN=zk3"
